@@ -1,0 +1,66 @@
+create table student_info (
+ student_id int(11) not null auto_increment,
+ student_first_name varchar(50) not null,
+ student_last_name varchar(50) default null,
+ student_contact varchar(20) default null,
+ student_email varchar(50) not null,
+ student_adding_date timestamp not null default current_timestamp(),
+ qr_string varchar(200) default null,
+ primary key (student_id)
+);
+
+
+INSERT INTO `student_info` (`student_id`, `student_first_name`, `student_last_name`, `student_contact`, `student_email`, `student_adding_date`, `qr_string`) VALUES
+(1, 'Aarush', 'Bhat', '+919563212204', 'aarush.bhatt2020@vitstudent.com', '2020-10-12 18:01:43', 'DAK41748A845A98'),
+(3, 'Advika', 'Shrivastava', '+918913454536', 'abcd@gmail.com', '2020-11-28 18:48:07', 'EJA12887I70744D'),
+(6, 'Shashank', 'Kansal', '+918718036469', 'abcdtest@gmail.com', '2021-01-28 19:44:35', 'HIK88505620K37D');
+
+
+DELIMITER $$
+CREATE TRIGGER `QR_STRING_GENERATION_INS` BEFORE INSERT ON `student_info` FOR EACH ROW begin
+
+IF NEW.qr_string IS NULL OR LENGTH(NEW.qr_string) < 1 THEN
+select substring(concat(substring(substring('ABCDEFGHIJKLMNOPQRSTUVWXYZ',RAND()*13,RAND()*13),1,1),
+substring(substring('ABCDEFGHIJKLMNOPQRSTUVWXYZ',RAND()*13,RAND()*13),1,1),
+substring(substring('ABCDEFGHIJKLMNOPQRSTUVWXYZ',RAND()*13,RAND()*13),1,1),
+substring(RAND() * 4333 * RAND()* 4333 * RAND() * 4333,1,5),
+substring(substring('ABCDEFGHIJKLMNOPQRSTUVWXYZ',RAND()*13,RAND()*13),1,1), 
+substring(RAND() * 4333 * RAND()* 4333 * RAND() * 4333,1,3),
+substring(substring('ABCDEFGHIJKLMNOPQRSTUVWXYZ',RAND()*13,RAND()*13),1,1),
+substring(RAND() * 4333 * RAND()* 4333 * RAND() * 4333,1,2),
+substring(substring('ABCDEFGHIJKLMNOPQRSTUVWXYZ',RAND()*13,RAND()*13),1,1),
+substring(substring('ABCDEFGHIJKLMNOPQRSTUVWXYZ',RAND()*13,RAND()*13),1,1),
+substring(substring('ABCDEFGHIJKLMNOPQRSTUVWXYZ',RAND()*13,RAND()*13),1,1),
+substring(substring('ABCDEFGHIJKLMNOPQRSTUVWXYZ',RAND()*13,RAND()*13),1,1) ),1,15) INTO @v_qrstring from dual;
+
+
+SET NEW.qr_string = @v_qrstring;
+
+END IF;
+end
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `QR_STRING_GENERATION_UPD` BEFORE UPDATE ON `student_info` FOR EACH ROW begin
+
+
+select substring(concat(substring(substring('ABCDEFGHIJKLMNOPQRSTUVWXYZ',RAND()*13,RAND()*13),1,1),
+substring(substring('ABCDEFGHIJKLMNOPQRSTUVWXYZ',RAND()*13,RAND()*13),1,1),
+substring(substring('ABCDEFGHIJKLMNOPQRSTUVWXYZ',RAND()*13,RAND()*13),1,1),
+substring(RAND() * 4333 * RAND()* 4333 * RAND() * 4333,1,5),
+substring(substring('ABCDEFGHIJKLMNOPQRSTUVWXYZ',RAND()*13,RAND()*13),1,1), 
+substring(RAND() * 4333 * RAND()* 4333 * RAND() * 4333,1,3),
+substring(substring('ABCDEFGHIJKLMNOPQRSTUVWXYZ',RAND()*13,RAND()*13),1,1),
+substring(RAND() * 4333 * RAND()* 4333 * RAND() * 4333,1,2),
+substring(substring('ABCDEFGHIJKLMNOPQRSTUVWXYZ',RAND()*13,RAND()*13),1,1),
+substring(substring('ABCDEFGHIJKLMNOPQRSTUVWXYZ',RAND()*13,RAND()*13),1,1),
+substring(substring('ABCDEFGHIJKLMNOPQRSTUVWXYZ',RAND()*13,RAND()*13),1,1),
+substring(substring('ABCDEFGHIJKLMNOPQRSTUVWXYZ',RAND()*13,RAND()*13),1,1) ),1,15) INTO @v_qrstring from dual;
+
+
+SET NEW.qr_string = @v_qrstring;
+
+end
+$$
+DELIMITER ;
+
